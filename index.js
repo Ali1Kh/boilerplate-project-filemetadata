@@ -1,5 +1,8 @@
 var express = require('express');
 var cors = require('cors');
+var uploadFiles = require("./multer.js")
+
+
 require('dotenv').config()
 
 var app = express();
@@ -12,7 +15,10 @@ app.get('/', function (req, res) {
 });
 
 
-
+app.post("/api/fileanalyse", uploadFiles().single("upfile"), function (req, res) {
+  let { fieldname, mimetype, size } = req.file;
+  return res.json({ name: fieldname, type: mimetype, size });
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, function () {
